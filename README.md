@@ -17,7 +17,6 @@ A web application built with Python (Flask), MySQL, and HTML/CSS to keep track o
 - `app.py` - Flask routes and Job Match logic
 - `database.py` - MySQL connection helper
 - `schema.sql` - Creates the `job_tracker` database and tables
-- `sample_data.sql` - Optional sample records for testing
 - `requirements.txt` - Python dependencies
 - `AI_USAGE.md` - AI usage documentation
 - `static/style.css` - Page styling
@@ -27,7 +26,7 @@ A web application built with Python (Flask), MySQL, and HTML/CSS to keep track o
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/YOUR_USERNAME/job_tracker.git](https://github.com/YOUR_USERNAME/job_tracker.git)
+git clone [https://github.com/aaroncuba/job_tracker.git](https://github.com/aaroncuba/job_tracker.git)
 cd job_tracker
 ```
 
@@ -52,11 +51,6 @@ Run `schema.sql` in MySQL Workbench or from the command line:
 mysql -u root -p < schema.sql
 ```
 
-Optional: load the sample data for testing:
-```bash
-mysql -u root -p < sample_data.sql
-```
-
 ### 4. Configure Environment Variables
 Create a `.env` file in the root folder with your local MySQL credentials:
 ```env
@@ -71,3 +65,7 @@ DB_NAME=job_tracker
 python app.py
 ```
 Open your browser and go to `http://127.0.0.1:5000`.
+
+## Demo Videos
+- `demo_app.mkv` - Walkthrough of the Flask server, dashboard, CRUD operations, and Job Match feature
+- `demo_database.mkv` - MySQL Workbench verification showing the database tables and saved records

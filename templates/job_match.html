@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Job Match</h1>
+
+<div class="box">
+    <h3>Enter Your Skills</h3>
+    <form method="POST" action="{{ url_for('job_match') }}">
+        <label>Your Skills (comma separated)</label>
+        <input type="text" name="skills" placeholder="Python, SQL, Flask" value="{{ user_skills }}" required>
+        <button type="submit" class="btn-primary">Find Matching Jobs</button>
+    </form>
+</div>
+
+{% if results is not none %}
+<div class="box">
+    <h3>Matching Jobs</h3>
+    {% if results %}
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Match</th>
+            <th>Matched Skills</th>
+            <th>Missing Skills</th>
+        </tr>
+        {% for r in results %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ r.job_title }}</td>
+            <td>{{ r.company_name }}</td>
+            <td><strong>{{ r.percent }}%</strong> ({{ r.matched_count }}/{{ r.total_count }})</td>
+            <td>{{ r.matched_skills }}</td>
+            <td>{{ r.missing_skills or 'None' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No jobs with listed skills found in the database.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

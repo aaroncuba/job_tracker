@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Applications</h1>
+
+<div class="box">
+    <h3>{% if edit_data %}Edit Application{% else %}Add Application{% endif %}</h3>
+    <form method="POST" action="{% if edit_data %}{{ url_for('update_application', id=edit_data.application_id) }}{% else %}{{ url_for('add_application') }}{% endif %}">
+        <div class="form-row">
+            <div>
+                <label>Job *</label>
+                <select name="job_id" required>
+                    <option value="">-- Select Job --</option>
+                    {% for j in jobs %}
+                        <option value="{{ j.job_id }}" {% if edit_data and edit_data.job_id == j.job_id %}selected{% endif %}>
+                            {{ j.job_title }} ({{ j.company_name }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Application Date *</label>
+                <input type="date" name="application_date" required value="{{ edit_data.application_date if edit_data else '' }}">
+            </div>
+            <div>
+                <label>Status</label>
+                <select name="status">
+                    {% for st in ['Applied', 'Screening', 'Interview', 'Offer', 'Rejected', 'Withdrawn'] %}
+                        <option value="{{ st }}" {% if edit_data and edit_data.status == st %}selected{% endif %}>{{ st }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Resume Version</label>
+                <input type="text" name="resume_version" placeholder="e.g. v2_backend" value="{{ edit_data.resume_version if edit_data and edit_data.resume_version else '' }}">
+            </div>
+            <div>
+                <label>Cover Letter Sent</label>
+                <select name="cover_letter_sent">
+                    <option value="0" {% if edit_data and not edit_data.cover_letter_sent %}selected{% endif %}>No</option>
+                    <option value="1" {% if edit_data and edit_data.cover_letter_sent %}selected{% endif %}>Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <label>Interview Notes</label>
+        <textarea name="interview_notes" rows="2" placeholder="Optional interview dates, rounds, or notes">{{ edit_notes if edit_notes else '' }}</textarea>
+
+        <button type="submit" class="btn-primary">{% if edit_data %}Save Changes{% else %}Add Application{% endif %}</button>
+        {% if edit_data %}
+            <a href="{{ url_for('applications') }}" class="btn btn-edit">Cancel</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="box">
+    <h3>Saved Applications</h3>
+    {% if applications %}
+    <table>
+        <tr>
+            <th>Job</th>
+            <th>Company</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Resume</th>
+            <th>Cover Letter</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+        {% for a in applications %}
+        <tr>
+            <td>{{ a.job_title }}</td>
+            <td>{{ a.company_name }}</td>
+            <td>{{ a.application_date }}</td>
+            <td>{{ a.status }}</td>
+            <td>{{ a.resume_version or '' }}</td>
+            <td>{{ 'Yes' if a.cover_letter_sent else 'No' }}</td>
+            <td>{{ a.notes_text }}</td>
+            <td class="action-btns">
+                <a href="{{ url_for('applications', edit_id=a.application_id) }}" class="btn btn-edit">Edit</a>
+                <form method="POST" action="{{ url_for('delete_application', id=a.application_id) }}" onsubmit="return confirm('Delete this application?');">
+                    <button type="submit" class="btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No applications yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

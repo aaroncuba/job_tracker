@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Contacts</h1>
+
+<div class="box">
+    <h3>{% if edit_data %}Edit Contact{% else %}Add Contact{% endif %}</h3>
+    <form method="POST" action="{% if edit_data %}{{ url_for('update_contact', id=edit_data.contact_id) }}{% else %}{{ url_for('add_contact') }}{% endif %}">
+        <div class="form-row">
+            <div>
+                <label>Company *</label>
+                <select name="company_id" required>
+                    <option value="">-- Select Company --</option>
+                    {% for c in companies %}
+                        <option value="{{ c.company_id }}" {% if edit_data and edit_data.company_id == c.company_id %}selected{% endif %}>
+                            {{ c.company_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Contact Name *</label>
+                <input type="text" name="contact_name" required value="{{ edit_data.contact_name if edit_data else '' }}">
+            </div>
+            <div>
+                <label>Title</label>
+                <input type="text" name="title" placeholder="e.g. Recruiter" value="{{ edit_data.title if edit_data and edit_data.title else '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Email</label>
+                <input type="email" name="email" value="{{ edit_data.email if edit_data and edit_data.email else '' }}">
+            </div>
+            <div>
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ edit_data.phone if edit_data and edit_data.phone else '' }}">
+            </div>
+            <div>
+                <label>LinkedIn URL</label>
+                <input type="text" name="linkedin_url" placeholder="https://linkedin.com/in/..." value="{{ edit_data.linkedin_url if edit_data and edit_data.linkedin_url else '' }}">
+            </div>
+        </div>
+
+        <label>Notes</label>
+        <textarea name="notes" rows="2">{{ edit_data.notes if edit_data and edit_data.notes else '' }}</textarea>
+
+        <button type="submit" class="btn-primary">{% if edit_data %}Save Changes{% else %}Add Contact{% endif %}</button>
+        {% if edit_data %}
+            <a href="{{ url_for('contacts') }}" class="btn btn-edit">Cancel</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="box">
+    <h3>Saved Contacts</h3>
+    {% if contacts %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Title</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>LinkedIn</th>
+            <th>Actions</th>
+        </tr>
+        {% for c in contacts %}
+        <tr>
+            <td>{{ c.contact_name }}</td>
+            <td>{{ c.company_name }}</td>
+            <td>{{ c.title or '' }}</td>
+            <td>{{ c.email or '' }}</td>
+            <td>{{ c.phone or '' }}</td>
+            <td>{% if c.linkedin_url %}<a href="{{ c.linkedin_url }}" target="_blank">Profile</a>{% endif %}</td>
+            <td class="action-btns">
+                <a href="{{ url_for('contacts', edit_id=c.contact_id) }}" class="btn btn-edit">Edit</a>
+                <form method="POST" action="{{ url_for('delete_contact', id=c.contact_id) }}" onsubmit="return confirm('Delete this contact?');">
+                    <button type="submit" class="btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No contacts yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

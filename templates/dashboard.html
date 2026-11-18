@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stats">
+    <div class="stat-box">
+        <h2>{{ stats.companies }}</h2>
+        <p>Companies</p>
+    </div>
+    <div class="stat-box">
+        <h2>{{ stats.jobs }}</h2>
+        <p>Jobs</p>
+    </div>
+    <div class="stat-box">
+        <h2>{{ stats.applications }}</h2>
+        <p>Applications</p>
+    </div>
+    <div class="stat-box">
+        <h2>{{ stats.contacts }}</h2>
+        <p>Contacts</p>
+    </div>
+</div>
+{% endblock %}

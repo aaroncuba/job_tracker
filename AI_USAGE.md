@@ -9,11 +9,13 @@
 3. "getting mysql.connector.errors.ProgrammingError 1045 access denied using password NO in python"
 4. "how to parse a mysql json column in python and match it against a comma separated string"
 5. "make a sample_data.sql script with a few test rows for each table"
+6. "getting authentication failed when pushing to github from powershell"
 
 ## What Worked Well
 - Setup and debugging was the biggest time saver. I kept hitting PowerShell errors trying to run `schema.sql` because `mysql` wasn't in my PATH, and Copilot pointed out I could just call `mysql.exe` directly by its full path. It also caught why Python was throwing the `using password: NO` error (my `.env` file wasn't in the root folder yet).
 - After I got the `companies` page working end to end, I used Copilot to help crank out the HTML forms and Flask routes for `jobs`, `applications`, and `contacts` since they follow the same pattern.
 - It helped me figure out the JSON side of things, like turning the comma-separated skills string from the form into a JSON array for MySQL and then pulling it back out to calculate the match percentage on the Job Match page.
+- It also helped with Git and GitHub setup, including initializing the repo, organizing commits, and fixing a `fatal: Authentication failed` push error by clearing out old cached GitHub logins from Windows Credential Manager.
 
 ## What I Modified
 - Simplified a lot of the CSS and Python variable names it suggested so the code stayed easy to read and debug.
@@ -24,4 +26,4 @@
 ## Lessons Learned
 - Building one full CRUD table first and making sure it actually works before touching the rest saves a lot of headaches.
 - Pasting the exact terminal error message gets you a real fix way faster than trying to describe the problem.
-- Even when generated code looks right, you still have to test it locally. Little things like an unsaved file or a missing `.env` will still break everything.
+- Even when generated code looks right, you still have to test it locally. Little things like an unsaved file, a missing `.env`, or old saved Git credentials will still break things.
